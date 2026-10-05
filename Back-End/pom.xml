@@ -8,7 +8,7 @@
 		<version>4.1.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>io.github.rickrocha</groupId>
+	<groupId>io.github.henriquedarocha</groupId>
 	<artifactId>batalha-naval</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name/>

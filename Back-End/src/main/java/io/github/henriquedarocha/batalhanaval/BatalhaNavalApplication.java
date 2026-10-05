@@ -1,4 +1,4 @@
-package io.github.rickrocha.batalha_naval;
+package io.github.henriquedarocha.batalhanaval;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
