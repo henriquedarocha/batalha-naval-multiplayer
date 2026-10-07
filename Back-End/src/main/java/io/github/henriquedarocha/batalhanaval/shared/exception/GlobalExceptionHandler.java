@@ -2,6 +2,7 @@ package io.github.henriquedarocha.batalhanaval.shared.exception;
 
 import io.github.henriquedarocha.batalhanaval.modules.auth.exception.InvalidCredentialsException;
 import io.github.henriquedarocha.batalhanaval.modules.player.exception.PlayerAlreadyExistsException;
+import io.github.henriquedarocha.batalhanaval.modules.player.exception.PlayerNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.validation.FieldError;
@@ -36,5 +37,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidCredentialsException.class)
     public ProblemDetail handleInvalidCredentials(InvalidCredentialsException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, ex.getMessage());
+    }
+
+    @ExceptionHandler(PlayerNotFoundException.class)
+    public ProblemDetail handlePlayerNotFound(PlayerNotFoundException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 }

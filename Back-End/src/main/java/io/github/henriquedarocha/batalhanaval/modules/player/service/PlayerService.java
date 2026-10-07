@@ -5,6 +5,7 @@ import io.github.henriquedarocha.batalhanaval.modules.player.domain.repository.P
 import io.github.henriquedarocha.batalhanaval.modules.player.dto.request.RegisterPlayerRequest;
 import io.github.henriquedarocha.batalhanaval.modules.player.dto.response.PlayerResponse;
 import io.github.henriquedarocha.batalhanaval.modules.player.exception.PlayerAlreadyExistsException;
+import io.github.henriquedarocha.batalhanaval.modules.player.exception.PlayerNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,18 @@ public class PlayerService {
                 savedPlayer.getUsername(),
                 savedPlayer.getEmail(),
                 savedPlayer.getCreatedAt()
+        );
+    }
+
+    public PlayerResponse findById(Long id) {
+        Player player = playerRepository.findById(id)
+                .orElseThrow(() -> new PlayerNotFoundException());
+
+        return new PlayerResponse(
+                player.getId(),
+                player.getUsername(),
+                player.getEmail(),
+                player.getCreatedAt()
         );
     }
 }
