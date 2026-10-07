@@ -33,23 +33,14 @@ public class PlayerService {
         Player player = new Player(request.username(), request.email(), passwordHash);
         Player savedPlayer = playerRepository.save(player);
 
-        return new PlayerResponse(
-                savedPlayer.getId(),
-                savedPlayer.getUsername(),
-                savedPlayer.getEmail(),
-                savedPlayer.getCreatedAt()
-        );
+        return PlayerResponse.from(savedPlayer);
     }
 
+    @Transactional(readOnly = true)
     public PlayerResponse findById(Long id) {
         Player player = playerRepository.findById(id)
                 .orElseThrow(() -> new PlayerNotFoundException());
 
-        return new PlayerResponse(
-                player.getId(),
-                player.getUsername(),
-                player.getEmail(),
-                player.getCreatedAt()
-        );
+        return PlayerResponse.from(player);
     }
 }
