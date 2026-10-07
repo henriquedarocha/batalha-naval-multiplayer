@@ -4,11 +4,39 @@ function RegisterPage() {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [message, setMessage] = useState('')
+
+    async function handleSubmit(event) {
+        event.preventDefault()
+
+        const player = {
+            username: username,
+            email: email,
+            password: password
+        }
+
+        const response = await fetch('http://localhost:8080/api/players', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(player)
+        })
+
+        if (response.status === 201) {
+            setMessage('')
+        } else if(response.status === 400) {
+            setMessage('')
+        } else if(response.status === 409) {
+            const problem = await response.json()
+            setMessage(problem.detail)
+        } else {
+            setMessage('')
+        }
+    }
 
     return (
         <main>
             <h1>Criar conta</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="username">Nome de usuário</label>
                     <input
@@ -36,7 +64,11 @@ function RegisterPage() {
                         onChange={(event) => setPassword(event.target.value)}
                     />
                 </div>
+                <div>
+                    <button type="submit">Cadastrar</button>
+                </div>
             </form>
+            <p>{message}</p>
         </main>
     )
 }
