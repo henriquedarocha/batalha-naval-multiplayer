@@ -88,6 +88,7 @@ O código do back-end é organizado por funcionalidade, em `modules/player` e `m
 ## Próximas etapas
 
 - Interface em React, com telas de cadastro e login
-- Criação de partidas e posicionamento dos navios
-- Jogo em tempo real com WebSockets
+- Tabuleiro e posicionamento dos navios
+- Modo single-player, contra o computador
+- Modo multiplayer em tempo real com WebSockets
 - Testes automatizados
