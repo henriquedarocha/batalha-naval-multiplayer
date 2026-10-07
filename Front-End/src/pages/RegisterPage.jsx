@@ -22,14 +22,17 @@ function RegisterPage() {
         })
 
         if (response.status === 201) {
-            setMessage('')
-        } else if(response.status === 400) {
-            setMessage('')
-        } else if(response.status === 409) {
+            setMessage('Cadastro criado com sucesso!')
+            setUsername('')
+            setEmail('')
+            setPassword('')
+        } else if (response.status === 400) {
+            setMessage('Dados inválidos')
+        } else if (response.status === 409) {
             const problem = await response.json()
             setMessage(problem.detail)
         } else {
-            setMessage('')
+            setMessage('Erro inesperado')
         }
     }
 
