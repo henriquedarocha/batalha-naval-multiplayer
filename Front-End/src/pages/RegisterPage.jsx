@@ -18,26 +18,31 @@ function RegisterPage() {
             password: password
         }
 
-        const response = await fetch('http://localhost:8080/api/players', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(player)
-        })
+        try {
+            const response = await fetch('http://localhost:8080/api/players', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(player)
+            })
 
-        if (response.status === 201) {
-            setMessage('Cadastro criado com sucesso!')
-            setUsername('')
-            setEmail('')
-            setPassword('')
-        } else if (response.status === 400) {
-            const problem = await response.json()
-            setMessage(problem.detail)
-            setErrors(problem.errors)
-        } else if (response.status === 409) {
-            const problem = await response.json()
-            setMessage(problem.detail)
-        } else {
-            setMessage('Erro inesperado')
+            if (response.status === 201) {
+                setMessage('Cadastro criado com sucesso!')
+                setUsername('')
+                setEmail('')
+                setPassword('')
+            } else if (response.status === 400) {
+                const problem = await response.json()
+                setMessage(problem.detail)
+                setErrors(problem.errors)
+            } else if (response.status === 409) {
+                const problem = await response.json()
+                setMessage(problem.detail)
+            } else {
+                setMessage('Erro inesperado')
+            }
+        } catch (error) {
+            console.error(error)
+            setMessage('Não foi possível conectar ao servidor. Tente novamente em instantes.')
         }
     }
 
@@ -67,8 +72,8 @@ function RegisterPage() {
                 </div>
                 <div>
                     <label htmlFor="password">Senha</label>
-                    <input 
-                        id="password" 
+                    <input
+                        id="password"
                         type="password"
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
