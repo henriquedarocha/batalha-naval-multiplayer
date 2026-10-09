@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useLocation } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 const API_URL = import.meta.env.VITE_API_URL
 
 function LoginPage() {
@@ -8,6 +8,7 @@ function LoginPage() {
     const [password, setPassword] = useState('')
     const [message, setMessage] = useState(location.state?.message ?? '')
     const [errors, setErrors] = useState({})
+    const navigate = useNavigate()
 
     async function handleSubmit(event) {
         event.preventDefault()
@@ -29,9 +30,7 @@ function LoginPage() {
             if (response.status === 200) {
                 const data = await response.json()
                 localStorage.setItem('token', data.token)
-                setMessage('Login realizado com sucesso!')
-                setEmail('')
-                setPassword('')
+                navigate('/home')
             } else if (response.status === 400) {
                 const problem = await response.json()
                 setMessage(problem.detail)
