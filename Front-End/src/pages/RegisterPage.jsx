@@ -1,4 +1,5 @@
 import { useState } from 'react'
+const API_URL = import.meta.env.VITE_API_URL
 
 function RegisterPage() {
     const [username, setUsername] = useState('')
@@ -19,7 +20,7 @@ function RegisterPage() {
         }
 
         try {
-            const response = await fetch('http://localhost:8080/api/players', {
+            const response = await fetch(`${API_URL}/api/players`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(player)
