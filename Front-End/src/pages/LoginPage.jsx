@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router'
 const API_URL = import.meta.env.VITE_API_URL
 
 function LoginPage() {
@@ -75,6 +76,9 @@ function LoginPage() {
                 </div>
             </form>
             <p>{message}</p>
+            <p>
+                Ainda não tem conta? <Link to="/register">Criar conta</Link>
+            </p>
         </main>
     )
 }
