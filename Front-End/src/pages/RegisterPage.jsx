@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 const API_URL = import.meta.env.VITE_API_URL
 
 function RegisterPage() {
@@ -8,6 +8,7 @@ function RegisterPage() {
     const [password, setPassword] = useState('')
     const [message, setMessage] = useState('')
     const [errors, setErrors] = useState({})
+    const navigate = useNavigate()
 
     async function handleSubmit(event) {
         event.preventDefault()
@@ -28,10 +29,7 @@ function RegisterPage() {
             })
 
             if (response.status === 201) {
-                setMessage('Cadastro criado com sucesso!')
-                setUsername('')
-                setEmail('')
-                setPassword('')
+                navigate('/login', { state: { message: 'Cadastro criado com sucesso! Agora é só fazer login.' } })
             } else if (response.status === 400) {
                 const problem = await response.json()
                 setMessage(problem.detail)

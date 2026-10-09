@@ -1,11 +1,12 @@
 import { useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 const API_URL = import.meta.env.VITE_API_URL
 
 function LoginPage() {
+    const location = useLocation()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [message, setMessage] = useState('')
+    const [message, setMessage] = useState(location.state?.message ?? '')
     const [errors, setErrors] = useState({})
 
     async function handleSubmit(event) {
