@@ -30,7 +30,14 @@ function RegisterPage() {
             })
 
             if (response.status === 201) {
-                navigate('/login', {state: {message: 'Cadastro criado com sucesso! Agora é só fazer login.'}})
+                navigate('/login', {
+                    state: {
+                        message: {
+                            text: 'Cadastro criado com sucesso! Agora é só fazer login.',
+                            type: 'success'
+                        }
+                    }
+                })
             } else if (response.status === 400) {
                 const problem = await response.json()
                 setMessage(problem.detail)
@@ -83,7 +90,7 @@ function RegisterPage() {
                 </div>
                 <button className="button" type="submit">Cadastrar</button>
             </form>
-            {message && <p className="message">{message}</p>}
+            {message && <p className="message message-error">{message}</p>}
             <p className="footer-text">
                 Já tem uma conta? <Link to="/login">Entrar</Link>
             </p>

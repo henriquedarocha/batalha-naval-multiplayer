@@ -7,13 +7,13 @@ function LoginPage() {
     const location = useLocation()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [message, setMessage] = useState(location.state?.message ?? '')
+    const [message, setMessage] = useState(location.state?.message ?? null)
     const [errors, setErrors] = useState({})
     const navigate = useNavigate()
 
     async function handleSubmit(event) {
         event.preventDefault()
-        setMessage('')
+        setMessage(null)
         setErrors({})
 
         const credentials = {
@@ -34,17 +34,17 @@ function LoginPage() {
                 navigate('/home')
             } else if (response.status === 400) {
                 const problem = await response.json()
-                setMessage(problem.detail)
+                setMessage({text: problem.detail, type: 'error'})
                 setErrors(problem.errors)
             } else if (response.status === 401) {
                 const problem = await response.json()
-                setMessage(problem.detail)
+                setMessage({text: problem.detail, type: 'error'})
             } else {
-                setMessage('Erro inesperado')
+                setMessage({text: 'Erro inesperado', type: 'error'})
             }
         } catch (error) {
             console.error(error)
-            setMessage('Não foi possível conectar ao servidor. Tente novamente em instantes.')
+            setMessage({text: 'Não foi possível conectar ao servidor. Tente novamente em instantes.', type: 'error'})
         }
     }
 
@@ -74,7 +74,7 @@ function LoginPage() {
                 </div>
                 <button className="button" type="submit">Entrar</button>
             </form>
-            {message && <p className="message">{message}</p>}
+            {message && <p className={`message message-${message.type}`}>{message.text}</p>}
             <p className="footer-text">
                 Ainda não tem conta? <Link to="/register">Criar conta</Link>
             </p>

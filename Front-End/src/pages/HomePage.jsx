@@ -22,7 +22,10 @@ function HomePage() {
                     setPlayer(data)
                 } else if (response.status === 401 || response.status === 404) {
                     localStorage.removeItem('token')
-                    navigate('/login', {replace: true, state: {message: 'Sua sessão expirou. Entre novamente.'}})
+                    navigate('/login', {
+                        replace: true,
+                        state: {message: {text: 'Sua sessão expirou. Entre novamente.', type: 'info'}}
+                    })
                 } else {
                     setMessage('Não foi possível carregar seus dados.')
                 }
@@ -37,15 +40,16 @@ function HomePage() {
 
     function handleLogout() {
         localStorage.removeItem('token')
-        navigate('/login', {replace: true, state: {message: 'Você saiu da sua conta.'}})
+        navigate('/login', {replace: true, state: {message: {text: 'Você saiu da sua conta.', type: 'info'}}})
     }
 
     return (
         <main className="card">
             <h1>Área do jogador</h1>
+            {!player && !message && <p className="message message-info">Carregando...</p>}
             {player && <p>Bem-vindo, {player.username}</p>}
 
-            {message && <p className="message">{message}</p>}
+            {message && <p className="message message-error">{message}</p>}
             <button className="button" type="button" onClick={handleLogout}>Sair</button>
         </main>
     )

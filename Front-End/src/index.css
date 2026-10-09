@@ -7,6 +7,8 @@
     --color-accent: #F2A541;
     --color-accent-hover: #F5B86A;
     --color-error: #FF6B6B;
+    --color-success: #5DD39E;
+    --color-info: #7CC4FF;
     --radius: 8px;
 
     font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -110,7 +112,25 @@ a:hover {
 
 .message {
     margin: 16px 0 0;
+    padding: 10px 12px;
     text-align: center;
+    border: 1px solid;
+    border-radius: var(--radius);
+}
+
+.message-error {
+    color: var(--color-error);
+    border-color: var(--color-error);
+}
+
+.message-success {
+    color: var(--color-success);
+    border-color: var(--color-success);
+}
+
+.message-info {
+    color: var(--color-info);
+    border-color: var(--color-info);
 }
 
 .footer-text {
