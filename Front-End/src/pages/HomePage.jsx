@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
+import {useEffect, useState} from 'react'
+import {useNavigate} from 'react-router'
+
 const API_URL = import.meta.env.VITE_API_URL
 
 function HomePage() {
@@ -13,7 +14,7 @@ function HomePage() {
 
             try {
                 const response = await fetch(`${API_URL}/api/players/me`, {
-                    headers: { Authorization: `Bearer ${token}` },
+                    headers: {Authorization: `Bearer ${token}`},
                 })
 
                 if (response.status === 200) {
@@ -21,7 +22,7 @@ function HomePage() {
                     setPlayer(data)
                 } else if (response.status === 401 || response.status === 404) {
                     localStorage.removeItem('token')
-                    navigate('/login', { replace: true, state: { message: 'Sua sessão expirou. Entre novamente.' } })
+                    navigate('/login', {replace: true, state: {message: 'Sua sessão expirou. Entre novamente.'}})
                 } else {
                     setMessage('Não foi possível carregar seus dados.')
                 }
@@ -36,20 +37,16 @@ function HomePage() {
 
     function handleLogout() {
         localStorage.removeItem('token')
-        navigate('/login', { replace: true, state: { message: 'Você saiu da sua conta.' } })
+        navigate('/login', {replace: true, state: {message: 'Você saiu da sua conta.'}})
     }
 
     return (
-        <main>
+        <main className="card">
             <h1>Área do jogador</h1>
             {player && <p>Bem-vindo, {player.username}</p>}
 
-            <p>{message}</p>
-            <button
-                type="button"
-                onClick={handleLogout}>
-                Sair
-            </button>
+            {message && <p className="message">{message}</p>}
+            <button className="button" type="button" onClick={handleLogout}>Sair</button>
         </main>
     )
 }

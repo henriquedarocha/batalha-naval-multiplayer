@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router'
+import {useState} from 'react'
+import {Link, useLocation, useNavigate} from 'react-router'
+
 const API_URL = import.meta.env.VITE_API_URL
 
 function LoginPage() {
@@ -23,7 +24,7 @@ function LoginPage() {
         try {
             const response = await fetch(`${API_URL}/api/auth/login`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(credentials)
             })
 
@@ -48,10 +49,10 @@ function LoginPage() {
     }
 
     return (
-        <main>
+        <main className="card">
             <h1>Entrar</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
+            <form className="form" onSubmit={handleSubmit}>
+                <div className="field">
                     <label htmlFor="email">E-mail</label>
                     <input
                         id="email"
@@ -59,9 +60,9 @@ function LoginPage() {
                         value={email}
                         onChange={(event) => setEmail(event.target.value)}
                     />
-                    {errors.email && <p>{errors.email}</p>}
+                    {errors.email && <p className="field-error">{errors.email}</p>}
                 </div>
-                <div>
+                <div className="field">
                     <label htmlFor="password">Senha</label>
                     <input
                         id="password"
@@ -69,14 +70,12 @@ function LoginPage() {
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
                     />
-                    {errors.password && <p>{errors.password}</p>}
+                    {errors.password && <p className="field-error">{errors.password}</p>}
                 </div>
-                <div>
-                    <button type="submit">Entrar</button>
-                </div>
+                <button className="button" type="submit">Entrar</button>
             </form>
-            <p>{message}</p>
-            <p>
+            {message && <p className="message">{message}</p>}
+            <p className="footer-text">
                 Ainda não tem conta? <Link to="/register">Criar conta</Link>
             </p>
         </main>
