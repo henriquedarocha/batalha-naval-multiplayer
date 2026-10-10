@@ -12,4 +12,9 @@ public record Coordinate(int row, int col) {
             throw new IllegalArgumentException("Coluna fora do tabuleiro: " + col);
         }
     }
+
+    public boolean isAdjacentTo(Coordinate other) {
+        return Math.abs(row - other.row()) <= 1
+                && Math.abs(col - other.col()) <= 1;
+    }
 }

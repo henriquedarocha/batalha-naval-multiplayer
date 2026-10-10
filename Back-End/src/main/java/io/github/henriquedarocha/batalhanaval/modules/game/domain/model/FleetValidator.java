@@ -14,6 +14,9 @@ public final class FleetValidator {
     public static void validate(List<ShipPlacement> ships, boolean shipsCanTouch) {
         validateComposition(ships);
         validateNoOverlap(ships);
+        if (!shipsCanTouch) {
+            validateNoTouching(ships);
+        }
     }
 
     private static void validateComposition(List<ShipPlacement> ships) {
@@ -40,5 +43,30 @@ public final class FleetValidator {
                 }
             }
         }
+    }
+
+    private static void validateNoTouching(List<ShipPlacement> ships) {
+        for (int i = 0; i < ships.size(); i++) {
+            for (int j = i + 1; j < ships.size(); j++) {
+                ShipPlacement first = ships.get(i);
+                ShipPlacement second = ships.get(j);
+
+                if (shipsTouch(first, second)) {
+                    throw new InvalidFleetException("Navios encostados não são permitidos nesta partida: "
+                            + first.type() + " e " + second.type());
+                }
+            }
+        }
+    }
+
+    private static boolean shipsTouch(ShipPlacement first, ShipPlacement second) {
+        for (Coordinate firstCell : first.cells()) {
+            for (Coordinate secondCell : second.cells()) {
+                if (firstCell.isAdjacentTo(secondCell)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
