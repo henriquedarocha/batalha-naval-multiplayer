@@ -59,4 +59,48 @@ class FleetValidatorTest {
                 () -> FleetValidator.validate(fleet, true));
         assertEquals("Navios sobrepostos na linha 0, coluna 3", exception.getMessage());
     }
+
+    @Test
+    void touchingShipsAreRejectedWhenNotAllowed() {
+        List<ShipPlacement> fleet = List.of(
+                ship(ShipType.CARRIER, 0, 0, Orientation.HORIZONTAL),
+                ship(ShipType.BATTLESHIP, 1, 0, Orientation.HORIZONTAL),
+                ship(ShipType.SUBMARINE, 4, 0, Orientation.HORIZONTAL),
+                ship(ShipType.CRUISER, 6, 0, Orientation.HORIZONTAL),
+                ship(ShipType.DESTROYER, 8, 0, Orientation.HORIZONTAL));
+
+        InvalidFleetException exception = assertThrows(InvalidFleetException.class,
+                () -> FleetValidator.validate(fleet, false));
+
+        assertEquals("Navios encostados não são permitidos nesta partida: CARRIER e BATTLESHIP",
+                exception.getMessage());
+    }
+
+    @Test
+    void touchingShipsAreAcceptedWhenAllowed() {
+        List<ShipPlacement> fleet = List.of(
+                ship(ShipType.CARRIER, 0, 0, Orientation.HORIZONTAL),
+                ship(ShipType.BATTLESHIP, 1, 0, Orientation.HORIZONTAL),
+                ship(ShipType.SUBMARINE, 4, 0, Orientation.HORIZONTAL),
+                ship(ShipType.CRUISER, 6, 0, Orientation.HORIZONTAL),
+                ship(ShipType.DESTROYER, 8, 0, Orientation.HORIZONTAL));
+
+        assertDoesNotThrow(() -> FleetValidator.validate(fleet, true));
+    }
+
+    @Test
+    void diagonalTouchIsRejectedWhenNotAllowed() {
+        List<ShipPlacement> fleet = List.of(
+                ship(ShipType.CARRIER, 0, 0, Orientation.HORIZONTAL),
+                ship(ShipType.BATTLESHIP, 2, 0, Orientation.HORIZONTAL),
+                ship(ShipType.SUBMARINE, 4, 0, Orientation.HORIZONTAL),
+                ship(ShipType.CRUISER, 6, 0, Orientation.HORIZONTAL),
+                ship(ShipType.DESTROYER, 1, 5, Orientation.HORIZONTAL));
+
+        InvalidFleetException exception = assertThrows(InvalidFleetException.class,
+                () -> FleetValidator.validate(fleet, false));
+
+        assertEquals("Navios encostados não são permitidos nesta partida: CARRIER e DESTROYER",
+                exception.getMessage());
+    }
 }
