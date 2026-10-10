@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class FleetValidatorTest {
 
@@ -45,5 +44,19 @@ class FleetValidatorTest {
                 ship(ShipType.DESTROYER, 8, 0, Orientation.HORIZONTAL));
 
         assertThrows(InvalidFleetException.class, () -> FleetValidator.validate(fleet, false));
+    }
+
+    @Test
+    void overlappingShipsAreRejected() {
+        List<ShipPlacement> fleet = List.of(
+                ship(ShipType.CARRIER, 0, 0, Orientation.HORIZONTAL),
+                ship(ShipType.BATTLESHIP, 2, 0, Orientation.HORIZONTAL),
+                ship(ShipType.CRUISER, 4, 0, Orientation.HORIZONTAL),
+                ship(ShipType.SUBMARINE, 6, 0, Orientation.HORIZONTAL),
+                ship(ShipType.DESTROYER, 0, 3, Orientation.VERTICAL));
+
+        InvalidFleetException exception = assertThrows(InvalidFleetException.class,
+                () -> FleetValidator.validate(fleet, true));
+        assertEquals("Navios sobrepostos na linha 0, coluna 3", exception.getMessage());
     }
 }
