@@ -13,6 +13,7 @@ public final class FleetValidator {
 
     public static void validate(List<ShipPlacement> ships, boolean shipsCanTouch) {
         validateComposition(ships);
+        validateNoOverlap(ships);
     }
 
     private static void validateComposition(List<ShipPlacement> ships) {
@@ -26,6 +27,17 @@ public final class FleetValidator {
         for (ShipPlacement ship : ships) {
             if (!seenTypes.add(ship.type())) {
                 throw new InvalidFleetException("Tipo de navio repetido na frota: " + ship.type());
+            }
+        }
+    }
+
+    private static void validateNoOverlap(List<ShipPlacement> ships) {
+        Set<Coordinate> occupiedCells = new HashSet<>();
+        for (ShipPlacement ship : ships) {
+            for (Coordinate cell : ship.cells()) {
+                if (!occupiedCells.add(cell)) {
+                    throw new InvalidFleetException("Navios sobrepostos na linha " + cell.row() + ", coluna " + cell.col());
+                }
             }
         }
     }
