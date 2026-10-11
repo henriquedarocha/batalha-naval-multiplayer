@@ -6,6 +6,7 @@ import io.github.henriquedarocha.batalhanaval.modules.player.exception.PlayerAlr
 import io.github.henriquedarocha.batalhanaval.modules.player.exception.PlayerNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -48,6 +49,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnsupportedGameModeException.class)
     public ProblemDetail handleUnsupportedGameMode(UnsupportedGameModeException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ProblemDetail handleUnreadableBody(HttpMessageNotReadableException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Corpo da requisição inválido");
     }
 
 }
