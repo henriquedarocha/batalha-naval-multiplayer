@@ -1,6 +1,8 @@
 package io.github.henriquedarocha.batalhanaval.modules.game.controller;
 
 import io.github.henriquedarocha.batalhanaval.modules.game.dto.request.CreateGameRequest;
+import io.github.henriquedarocha.batalhanaval.modules.game.dto.request.PlaceFleetRequest;
+import io.github.henriquedarocha.batalhanaval.modules.game.dto.response.GameDetailsResponse;
 import io.github.henriquedarocha.batalhanaval.modules.game.dto.response.GameResponse;
 import io.github.henriquedarocha.batalhanaval.modules.game.service.GameService;
 import jakarta.validation.Valid;
@@ -26,4 +28,14 @@ public class GameController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @PostMapping("/{id}/fleet")
+    public ResponseEntity<GameDetailsResponse> placeFleet(@AuthenticationPrincipal Jwt jwt, @PathVariable Long id,
+                                                          @Valid @RequestBody PlaceFleetRequest request) {
+        Long playerId = Long.valueOf(jwt.getSubject());
+        GameDetailsResponse response = gameService.placeFleet(playerId, id, request);
+
+        return ResponseEntity.ok(response);
+    }
+
 }

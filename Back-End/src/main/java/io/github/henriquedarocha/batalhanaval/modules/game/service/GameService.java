@@ -2,14 +2,16 @@ package io.github.henriquedarocha.batalhanaval.modules.game.service;
 
 import io.github.henriquedarocha.batalhanaval.modules.game.domain.entity.Game;
 import io.github.henriquedarocha.batalhanaval.modules.game.domain.entity.Ship;
-import io.github.henriquedarocha.batalhanaval.modules.game.domain.model.GameMode;
-import io.github.henriquedarocha.batalhanaval.modules.game.domain.model.RandomFleetGenerator;
-import io.github.henriquedarocha.batalhanaval.modules.game.domain.model.ShipPlacement;
-import io.github.henriquedarocha.batalhanaval.modules.game.domain.model.Side;
+import io.github.henriquedarocha.batalhanaval.modules.game.domain.model.*;
 import io.github.henriquedarocha.batalhanaval.modules.game.domain.repository.GameRepository;
 import io.github.henriquedarocha.batalhanaval.modules.game.domain.repository.ShipRepository;
 import io.github.henriquedarocha.batalhanaval.modules.game.dto.request.CreateGameRequest;
+import io.github.henriquedarocha.batalhanaval.modules.game.dto.request.PlaceFleetRequest;
+import io.github.henriquedarocha.batalhanaval.modules.game.dto.request.ShipPlacementRequest;
+import io.github.henriquedarocha.batalhanaval.modules.game.dto.response.GameDetailsResponse;
 import io.github.henriquedarocha.batalhanaval.modules.game.dto.response.GameResponse;
+import io.github.henriquedarocha.batalhanaval.modules.game.exception.GameNotFoundException;
+import io.github.henriquedarocha.batalhanaval.modules.game.exception.GameNotPlacingShipsException;
 import io.github.henriquedarocha.batalhanaval.modules.game.exception.UnsupportedGameModeException;
 import io.github.henriquedarocha.batalhanaval.modules.player.domain.entity.Player;
 import io.github.henriquedarocha.batalhanaval.modules.player.domain.repository.PlayerRepository;
@@ -18,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -50,6 +53,31 @@ public class GameService {
         return GameResponse.from(savedGame);
     }
 
+    @Transactional
+    public GameDetailsResponse placeFleet(Long playerId, Long gameId, PlaceFleetRequest request) {
+        Game game = gameRepository.findByIdAndPlayerOneId(gameId, playerId)
+                .orElseThrow(() -> new GameNotFoundException());
+
+        if (game.getStatus() != GameStatus.PLACING_SHIPS) {
+            throw new GameNotPlacingShipsException();
+        }
+
+        List<ShipPlacement> fleet = new ArrayList<>();
+        for (ShipPlacementRequest shipRequest : request.ships()) {
+            fleet.add(toPlacement(shipRequest));
+        }
+        FleetValidator.validate(fleet, game.isShipsCanTouch());
+
+        List<Ship> savedShips = new ArrayList<>();
+        for (ShipPlacement placement : fleet) {
+            savedShips.add(shipRepository.save(toEntity(game, Side.PLAYER_ONE, placement)));
+        }
+
+        game.startBattle();
+
+        return GameDetailsResponse.from(game, savedShips);
+    }
+
     private Ship toEntity(Game game, Side side, ShipPlacement placement) {
         return new Ship(
                 game,
@@ -58,6 +86,14 @@ public class GameService {
                 placement.start().row(),
                 placement.start().col(),
                 placement.orientation()
+        );
+    }
+
+    private ShipPlacement toPlacement(ShipPlacementRequest request) {
+        return new ShipPlacement(
+                request.type(),
+                new Coordinate(request.row(), request.col()),
+                request.orientation()
         );
     }
 }

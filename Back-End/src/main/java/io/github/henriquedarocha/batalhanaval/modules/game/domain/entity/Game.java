@@ -46,4 +46,11 @@ public class Game {
         this.playerOne = playerOne;
         this.status = GameStatus.PLACING_SHIPS;
     }
+
+    public void startBattle() {
+        if (status != GameStatus.PLACING_SHIPS) {
+            throw new IllegalStateException("Partida não está em posicionamento: " + status);
+        }
+        this.status = GameStatus.IN_PROGRESS;
+    }
 }
