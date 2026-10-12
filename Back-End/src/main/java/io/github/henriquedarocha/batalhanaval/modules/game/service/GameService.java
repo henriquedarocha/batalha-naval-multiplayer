@@ -78,6 +78,17 @@ public class GameService {
         return GameDetailsResponse.from(game, savedShips);
     }
 
+    @Transactional(readOnly = true)
+    public GameDetailsResponse getGame(Long playerId, Long gameId) {
+        Game game = gameRepository.findByIdAndPlayerOneId(gameId, playerId)
+                .orElseThrow(() -> new GameNotFoundException());
+
+        List<Ship> playerFleet = shipRepository.findByGameIdAndSideOrderByIdAsc(game.getId(), Side.PLAYER_ONE);
+
+        return GameDetailsResponse.from(game, playerFleet);
+    }
+
+
     private Ship toEntity(Game game, Side side, ShipPlacement placement) {
         return new Ship(
                 game,

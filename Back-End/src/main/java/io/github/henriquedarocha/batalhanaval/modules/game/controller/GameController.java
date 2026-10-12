@@ -38,4 +38,11 @@ public class GameController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<GameDetailsResponse> getGame(@AuthenticationPrincipal Jwt jwt, @PathVariable Long id) {
+        Long playerId = Long.valueOf(jwt.getSubject());
+        GameDetailsResponse response = gameService.getGame(playerId, id);
+
+        return ResponseEntity.ok(response);
+    }
 }
