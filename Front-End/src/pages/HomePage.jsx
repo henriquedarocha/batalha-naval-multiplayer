@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react'
-import {useNavigate} from 'react-router'
+import {Link, useNavigate} from 'react-router'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -48,9 +48,11 @@ function HomePage() {
             <h1>Área do jogador</h1>
             {!player && !message && <p className="message message-info">Carregando...</p>}
             {player && <p>Bem-vindo, {player.username}</p>}
-
             {message && <p className="message message-error">{message}</p>}
-            <button className="button" type="button" onClick={handleLogout}>Sair</button>
+            <div className="actions">
+                <Link className="button" to="/games/new">Nova partida</Link>
+                <button className="button" type="button" onClick={handleLogout}>Sair</button>
+            </div>
         </main>
     )
 }
