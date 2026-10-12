@@ -47,7 +47,7 @@ function HomePage() {
         <main className="card">
             <h1>Área do jogador</h1>
             {!player && !message && <p className="message message-info">Carregando...</p>}
-            {player && <p>Bem-vindo, {player.username}</p>}
+            {player && <p>Boas-vindas, {player.username}!</p>}
             {message && <p className="message message-error">{message}</p>}
             <div className="actions">
                 <Link className="button" to="/games/new">Nova partida</Link>
