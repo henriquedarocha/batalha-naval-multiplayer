@@ -9,6 +9,8 @@
     --color-error: #FF6B6B;
     --color-success: #5DD39E;
     --color-info: #7CC4FF;
+    --color-water: #1A3A5F;
+    --color-ship: #B8C7D9;
     --radius: 8px;
 
     font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
@@ -182,4 +184,48 @@ a:hover {
 .choice input:focus-visible {
     outline: 2px solid var(--color-text);
     outline-offset: 2px;
+}
+
+.cell {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    font: inherit;
+    font-weight: 700;
+    color: var(--color-text);
+    background-color: var(--color-water);
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+}
+
+.cell-ship {
+    color: var(--color-bg);
+    background-color: var(--color-ship);
+}
+
+.cell:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}
+
+.board {
+    display: grid;
+    /* 11 colunas: letras + 10 casas. Exceção consciente: repete o BOARD_SIZE (o CSS não lê o JS). */
+    grid-template-columns: repeat(11, 2.25rem);
+    gap: 2px;
+    justify-content: center;
+    margin: 16px 0;
+}
+
+.board-label {
+    display: grid;
+    place-items: center;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.card-wide {
+    max-width: 560px;
 }

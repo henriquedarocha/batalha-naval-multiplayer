@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react'
 import {Link, useNavigate, useParams} from 'react-router'
+import Board from '../components/Board.jsx'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -48,7 +49,7 @@ function GamePage() {
     }, [id, navigate])
 
     return (
-        <main className="card">
+        <main className="card card-wide">
             <h1>Partida contra o computador</h1>
             {!game && !message && <p className="message message-info">Carregando...</p>}
             {message && <p className="message message-error">{message}</p>}
@@ -56,6 +57,7 @@ function GamePage() {
                 <>
                     <p>Situação: {STATUS_LABELS[game.status]}</p>
                     <p>{game.shipsCanTouch ? 'Navios podem encostar.' : 'Navios não podem encostar.'}</p>
+                    <Board ships={game.fleet} />
                 </>
             )}
             <p className="footer-text">
