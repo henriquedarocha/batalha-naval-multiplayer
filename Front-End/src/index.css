@@ -229,3 +229,62 @@ a:hover {
 .card-wide {
     max-width: 560px;
 }
+
+.fleet-placement {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ship-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ship-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ship-option {
+    padding: 8px 12px;
+    font: inherit;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    cursor: pointer;
+}
+
+.ship-option:hover:not(:disabled) {
+    border-color: var(--color-accent);
+}
+
+.ship-option-selected {
+    /* Borda 2px mais grossa: o padding perde 2px para o botão não mudar de tamanho */
+    padding: 6px 10px;
+    font-weight: 700;
+    border: 3px solid var(--color-accent);
+}
+
+.ship-option:disabled {
+    color: var(--color-text-muted);
+    border-style: dashed;
+    cursor: not-allowed;
+}
+
+.ship-option:focus-visible {
+    outline: 2px solid var(--color-text);
+    outline-offset: 2px;
+}
+
+.fleet-count {
+    margin: 0;
+    text-align: center;
+    color: var(--color-text-muted);
+}

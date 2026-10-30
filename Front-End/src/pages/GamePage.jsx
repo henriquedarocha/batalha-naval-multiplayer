@@ -1,6 +1,7 @@
 import {useEffect, useState} from 'react'
 import {Link, useNavigate, useParams} from 'react-router'
 import Board from '../components/Board.jsx'
+import FleetPlacement from '../components/FleetPlacement.jsx'
 
 const API_URL = import.meta.env.VITE_API_URL
 
@@ -57,7 +58,9 @@ function GamePage() {
                 <>
                     <p>Situação: {STATUS_LABELS[game.status]}</p>
                     <p>{game.shipsCanTouch ? 'Navios podem encostar.' : 'Navios não podem encostar.'}</p>
-                    <Board ships={game.fleet} />
+                    {game.status === 'PLACING_SHIPS'
+                        ? <FleetPlacement/>
+                        : <Board ships={game.fleet}/>}
                 </>
             )}
             <p className="footer-text">

@@ -34,3 +34,11 @@ export function shipCells(ship) {
 
     return cells
 }
+
+export function isPlaced(draft, type) {
+    return draft.some((ship) => ship.type === type)
+}
+
+export function firstPendingType(draft) {
+    return Object.keys(SHIP_TYPES).find((type) => !isPlaced(draft, type)) ?? null
+}

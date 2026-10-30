@@ -2,7 +2,7 @@ import {Fragment} from 'react'
 import Cell from './Cell.jsx'
 import {POSITIONS, rowLabel, shipCells} from '../game/fleet.js'
 
-function Board({ships}) {
+function Board({ships, onCellClick}) {
     const shipAt = {}
     for (const ship of ships) {
         for (const cell of shipCells(ship)) {
@@ -21,7 +21,12 @@ function Board({ships}) {
                 <Fragment key={row}>
                     <span className="board-label" aria-hidden="true">{rowLabel(row)}</span>
                     {POSITIONS.map((col) => (
-                        <Cell key={col} row={row} col={col} shipType={shipAt[`${row}-${col}`] ?? null}/>
+                        <Cell
+                            key={col}
+                            row={row}
+                            col={col}
+                            shipType={shipAt[`${row}-${col}`] ?? null}
+                            onCellClick={onCellClick}/>
                     ))}
                 </Fragment>
             ))}
